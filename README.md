@@ -56,7 +56,7 @@ Don't forget to give the project a star! Thanks again!
 
 ## Contact
 
-Nguyen Hai Duong - [@facebook_handle](https://www.facebook.com/duong.nguyenhai.7140/) - muoi07052001@gmail.com
+Nguyen Hai Duong - [Facebook: Hải Dương](https://www.facebook.com/duong.nguyenhai.7140/) - muoi07052001@gmail.com
 
 Project Link: [https://github.com/dylan751/hust-gr1-office-addin](https://github.com/dylan751/hust-gr1-office-addin)
 
