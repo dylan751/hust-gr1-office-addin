@@ -9,6 +9,7 @@ Office.onReady((info) => {
   if (info.host === Office.HostType.Word) {
     // Assign event handlers and other initialization logic.
     document.getElementById("insert-paragraph").onclick = () => tryCatch(insertParagraph);
+    document.getElementById("apply-style").onclick = () => tryCatch(applyStyle);
 
     document.getElementById("sideload-msg").style.display = "none";
     document.getElementById("app-body").style.display = "flex";
@@ -23,6 +24,16 @@ async function insertParagraph() {
       "Office has several versions, including Office 2016, Microsoft 365 subscription, and Office on the web.",
       Word.InsertLocation.start
     );
+
+    await context.sync();
+  });
+}
+
+async function applyStyle() {
+  await Word.run(async (context) => {
+    // Queue commands to style text.
+    const firstParagraph = context.document.body.paragraphs.getFirst();
+    firstParagraph.styleBuiltIn = Word.Style.intenseReference;
 
     await context.sync();
   });
