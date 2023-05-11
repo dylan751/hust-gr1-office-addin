@@ -12,6 +12,7 @@ Office.onReady((info) => {
     document.getElementById("apply-style").onclick = () => tryCatch(applyStyle);
     document.getElementById("apply-custom-style").onclick = () => tryCatch(applyCustomStyle);
     document.getElementById("change-font").onclick = () => tryCatch(changeFont);
+    document.getElementById("insert-text-into-range").onclick = () => tryCatch(insertTextIntoRange);
 
     document.getElementById("sideload-msg").style.display = "none";
     document.getElementById("app-body").style.display = "flex";
@@ -60,6 +61,26 @@ async function changeFont() {
       bold: true,
       size: 18,
     });
+
+    await context.sync();
+  });
+}
+
+async function insertTextIntoRange() {
+  await Word.run(async (context) => {
+    // Queue commands to insert text into a selected range.
+    const doc = context.document;
+    const originalRange = doc.getSelection();
+    originalRange.insertText(" (M365)", Word.InsertLocation.end);
+
+    // Load the text of the range and sync so that the
+    //        current range text can be read.
+    originalRange.load("text");
+    await context.sync();
+
+    // Queue commands to repeat the text of the original
+    //        range at the end of the document.
+    doc.body.insertParagraph("Original range: " + originalRange.text, Word.InsertLocation.end);
 
     await context.sync();
   });
