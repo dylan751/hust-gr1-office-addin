@@ -10,6 +10,7 @@ Office.onReady((info) => {
     // Assign event handlers and other initialization logic.
     document.getElementById("insert-paragraph").onclick = () => tryCatch(insertParagraph);
     document.getElementById("apply-style").onclick = () => tryCatch(applyStyle);
+    document.getElementById("apply-custom-style").onclick = () => tryCatch(applyCustomStyle);
     document.getElementById("change-font").onclick = () => tryCatch(changeFont);
 
     document.getElementById("sideload-msg").style.display = "none";
@@ -35,6 +36,16 @@ async function applyStyle() {
     // Queue commands to style text.
     const firstParagraph = context.document.body.paragraphs.getFirst();
     firstParagraph.styleBuiltIn = Word.Style.intenseReference;
+
+    await context.sync();
+  });
+}
+
+async function applyCustomStyle() {
+  await Word.run(async (context) => {
+    // Queue commands to apply the custom style.
+    const lastParagraph = context.document.body.paragraphs.getLast();
+    lastParagraph.style = "MyCustomStyle";
 
     await context.sync();
   });
