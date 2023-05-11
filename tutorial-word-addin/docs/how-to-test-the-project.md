@@ -1,4 +1,4 @@
-## How to test this project
+## Test the Add-in
 
 1. If the local web server is already running and your add-in is already loaded in Word, proceed to step 2. Otherwise, start the local web server and sideload your add-in. (See [README.md](../README.md))
 
@@ -13,3 +13,5 @@
 6. Choose the `Apply Custom Style` button. The last paragraph will be styled with your custom style. (If nothing seems to happen, the last paragraph might be blank. If so, add some text to it.)
 
 7. Choose the `Change Font` button. The font of the second paragraph changes to 18 pt., bold, Courier New.
+
+![expected-output-image](../assets/how-to-test-the-project/word-tutorial-apply-styles-and-font-2.png)
