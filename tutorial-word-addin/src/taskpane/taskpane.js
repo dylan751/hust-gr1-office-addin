@@ -10,6 +10,7 @@ Office.onReady((info) => {
     // Assign event handlers and other initialization logic.
     document.getElementById("insert-paragraph").onclick = () => tryCatch(insertParagraph);
     document.getElementById("apply-style").onclick = () => tryCatch(applyStyle);
+    document.getElementById("change-font").onclick = () => tryCatch(changeFont);
 
     document.getElementById("sideload-msg").style.display = "none";
     document.getElementById("app-body").style.display = "flex";
@@ -34,6 +35,20 @@ async function applyStyle() {
     // Queue commands to style text.
     const firstParagraph = context.document.body.paragraphs.getFirst();
     firstParagraph.styleBuiltIn = Word.Style.intenseReference;
+
+    await context.sync();
+  });
+}
+
+async function changeFont() {
+  await Word.run(async (context) => {
+    // Queue commands to apply a different font.
+    const secondParagraph = context.document.body.paragraphs.getFirst().getNext();
+    secondParagraph.font.set({
+      name: "Courier New",
+      bold: true,
+      size: 18,
+    });
 
     await context.sync();
   });
