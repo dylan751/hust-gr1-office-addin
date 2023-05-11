@@ -60,8 +60,10 @@ npm run dev-server
     ```
 
 In Word, if the "My Office Add-in" task pane isn't already open, open a new document, choose the Home tab, and then choose the Show Taskpane button in the ribbon to open the add-in task pane.
+<br />
 ![image-2](https://learn.microsoft.com/en-us/office/dev/add-ins/images/word-quickstart-addin-2b.png)
 
 At the bottom of the task pane, choose the Run link to add the text "Hello World" to the document in blue font.
+<br />
 ![image-3](https://learn.microsoft.com/en-us/office/dev/add-ins/images/word-quickstart-addin-1c.png)
 
