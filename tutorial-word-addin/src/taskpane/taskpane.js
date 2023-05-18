@@ -14,6 +14,7 @@ Office.onReady((info) => {
     document.getElementById("change-font").onclick = () => tryCatch(changeFont);
     document.getElementById("insert-text-into-range").onclick = () => tryCatch(insertTextIntoRange);
     document.getElementById("insert-text-outside-range").onclick = () => tryCatch(insertTextBeforeRange);
+    document.getElementById("replace-text").onclick = () => tryCatch(replaceText);
 
     document.getElementById("sideload-msg").style.display = "none";
     document.getElementById("app-body").style.display = "flex";
@@ -115,12 +116,29 @@ async function insertTextBeforeRange() {
   });
 }
 
+/**
+ * The function is intended to replace the string "several"
+ * with the string "many". It makes a simplifying assumption
+ * that the string is present and the user has selected it.
+ */
+async function replaceText() {
+  await Word.run(async (context) => {
+    // 1. Queue commands to replace the text.
+    const doc = context.document;
+    const originalRange = doc.getSelection();
+    originalRange.insertText("many", Word.InsertLocation.replace);
+
+    await context.sync();
+  });
+}
+
 /** Default helper for invoking an action and handling errors. */
 async function tryCatch(callback) {
   try {
     await callback();
   } catch (error) {
     // Note: In a production add-in, you'd want to notify the user through your add-in's UI.
+    // eslint-disable-next-line no-undef
     console.error(error);
   }
 }
