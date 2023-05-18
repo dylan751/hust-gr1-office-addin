@@ -67,20 +67,23 @@ async function changeFont() {
   });
 }
 
+/**
+ * The function is intended to insert the abbreviation ["(M365)"]
+ * into the end of the Range whose text is "Microsoft 365". It makes a
+ * simplifying assumption that the string is present and the user has selected it.
+ */
 async function insertTextIntoRange() {
   await Word.run(async (context) => {
-    // Queue commands to insert text into a selected range.
+    // 1. Queue commands to insert text into a selected range.
     const doc = context.document;
     const originalRange = doc.getSelection();
     originalRange.insertText(" (M365)", Word.InsertLocation.end);
 
-    // Load the text of the range and sync so that the
-    // current range text can be read.
+    // 2. Load the text of the range and sync so that the current range text can be read.
     originalRange.load("text");
     await context.sync();
 
-    // Queue commands to repeat the text of the original
-    // range at the end of the document.
+    // 3. Queue commands to repeat the text of the original range at the end of the document.
     doc.body.insertParagraph("Original range: " + originalRange.text, Word.InsertLocation.end);
 
     await context.sync();
@@ -94,23 +97,20 @@ async function insertTextIntoRange() {
  */
 async function insertTextBeforeRange() {
   await Word.run(async (context) => {
-    // Queue commands to insert a new range before the
-    // selected range.
+    // 1. Queue commands to insert a new range before the selected range.
     const doc = context.document;
     const originalRange = doc.getSelection();
     originalRange.insertText("Office 2019, ", Word.InsertLocation.before);
 
-    // Load the text of the original range and sync so that the
-    // range text can be read and inserted.
+    // 2. Load the text of the original range and sync so that the range text can be read and inserted.
     originalRange.load("text");
     await context.sync();
 
-    // Queue commands to insert the original range as a
-    // paragraph at the end of the document.
+    // 3. Queue commands to insert the original range as a paragraph at the end of the document.
+    // This new paragraph will demonstrate the fact that the new text is not part of the original selected range. The original range still has only the text it had when it was selected.
     doc.body.insertParagraph("Current text of original range: " + originalRange.text, Word.InsertLocation.end);
 
-    // Make a final call of context.sync here and ensure
-    // that it runs after the insertParagraph has been queued.
+    // 4. Make a final call of context.sync here and ensure that it runs after the insertParagraph has been queued.
     await context.sync();
   });
 }
