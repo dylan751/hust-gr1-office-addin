@@ -15,3 +15,5 @@
 7. Choose the `Change Font` button. The font of the second paragraph changes to 18 pt., bold, Courier New.
 
 ![expected-output-image](../assets/how-to-test-the-project/word-tutorial-apply-styles-and-font-2.png)
+
+8. Clear all the document, proceed to the [How to test the project (Part 2)](./how-to-test-the-project-2.md)
