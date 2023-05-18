@@ -13,6 +13,7 @@ Office.onReady((info) => {
     document.getElementById("apply-custom-style").onclick = () => tryCatch(applyCustomStyle);
     document.getElementById("change-font").onclick = () => tryCatch(changeFont);
     document.getElementById("insert-text-into-range").onclick = () => tryCatch(insertTextIntoRange);
+    document.getElementById("insert-text-outside-range").onclick = () => tryCatch(insertTextBeforeRange);
 
     document.getElementById("sideload-msg").style.display = "none";
     document.getElementById("app-body").style.display = "flex";
@@ -74,14 +75,37 @@ async function insertTextIntoRange() {
     originalRange.insertText(" (M365)", Word.InsertLocation.end);
 
     // Load the text of the range and sync so that the
-    //        current range text can be read.
+    // current range text can be read.
     originalRange.load("text");
     await context.sync();
 
     // Queue commands to repeat the text of the original
-    //        range at the end of the document.
+    // range at the end of the document.
     doc.body.insertParagraph("Original range: " + originalRange.text, Word.InsertLocation.end);
 
+    await context.sync();
+  });
+}
+
+async function insertTextBeforeRange() {
+  await Word.run(async (context) => {
+    // Queue commands to insert a new range before the
+    // selected range.
+    const doc = context.document;
+    const originalRange = doc.getSelection();
+    originalRange.insertText("Office 2019, ", Word.InsertLocation.before);
+
+    // Load the text of the original range and sync so that the
+    // range text can be read and inserted.
+    originalRange.load("text");
+    await context.sync();
+
+    // Queue commands to insert the original range as a
+    // paragraph at the end of the document.
+    doc.body.insertParagraph("Current text of original range: " + originalRange.text, Word.InsertLocation.end);
+
+    // Make a final call of context.sync here and ensure
+    // that it runs after the insertParagraph has been queued.
     await context.sync();
   });
 }
