@@ -87,6 +87,11 @@ async function insertTextIntoRange() {
   });
 }
 
+/**
+ * The function is intended to add a range whose text is "Office 2019, "
+ * before the range with text "Microsoft 364". It makes an assumption that
+ * the string is present and the user has selected it.
+ */
 async function insertTextBeforeRange() {
   await Word.run(async (context) => {
     // Queue commands to insert a new range before the
