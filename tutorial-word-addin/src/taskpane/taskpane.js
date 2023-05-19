@@ -18,6 +18,7 @@ Office.onReady((info) => {
     document.getElementById("replace-text").onclick = () => tryCatch(replaceText);
     document.getElementById("insert-image").onclick = () => tryCatch(insertImage);
     document.getElementById("insert-html").onclick = () => tryCatch(insertHTML);
+    document.getElementById("insert-table").onclick = () => tryCatch(insertTable);
 
     document.getElementById("sideload-msg").style.display = "none";
     document.getElementById("app-body").style.display = "flex";
@@ -158,6 +159,31 @@ async function insertHTML() {
       '<p style="font-family: verdana;">Inserted HTML.</p><p>Another paragraph</p>',
       Word.InsertLocation.end
     );
+
+    await context.sync();
+  });
+}
+
+async function insertTable() {
+  await Word.run(async (context) => {
+    // 1. Queue commands to get a reference to the paragraph that will precede the table.
+    // Note: this line uses the ParagraphCollection.getFirst method to get a reference to the first paragraph and then uses the Paragraph.getNext method to get a reference to the second paragraph.
+    const secondParagraph = context.document.body.paragraphs.getFirst().getNext();
+
+    // 2. Queue commands to create a table and populate it with data.
+
+    /**
+     * The first two parameters of the insertTable method specify the number of rows and columns.
+     * The third parameter specifies where to insert the table, in this case after the paragraph.
+     * The fourth parameter is a two-dimensional array that sets the values of the table cells.
+     * The table will have plain default styling, but the insertTable method returns a Table object with many members, some of which are used to style the table.
+     */
+    const tableData = [
+      ["Name", "ID", "Birth City"],
+      ["Bob", "434", "Chicago"],
+      ["Sue", "719", "Havana"],
+    ];
+    secondParagraph.insertTable(3, 3, Word.InsertLocation.after, tableData);
 
     await context.sync();
   });
