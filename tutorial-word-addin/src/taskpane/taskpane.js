@@ -19,6 +19,7 @@ Office.onReady((info) => {
     document.getElementById("insert-image").onclick = () => tryCatch(insertImage);
     document.getElementById("insert-html").onclick = () => tryCatch(insertHTML);
     document.getElementById("insert-table").onclick = () => tryCatch(insertTable);
+    document.getElementById("create-content-control").onclick = () => tryCatch(createContentControl);
 
     document.getElementById("sideload-msg").style.display = "none";
     document.getElementById("app-body").style.display = "flex";
@@ -184,6 +185,29 @@ async function insertTable() {
       ["Sue", "719", "Havana"],
     ];
     secondParagraph.insertTable(3, 3, Word.InsertLocation.after, tableData);
+
+    await context.sync();
+  });
+}
+
+/**
+ * This code is intended to wrap the phrase "Microsoft 365" in a content control. It makes a simplifying assumption that the string is present and the user has selected it.
+ */
+async function createContentControl() {
+  await Word.run(async (context) => {
+    // 1. Queue commands to create a content control.
+
+    const serviceNameRange = context.document.getSelection();
+    const serviceNameContentControl = serviceNameRange.insertContentControl();
+
+    // The ContentControl.title property specifies the visible title of the content control.
+    serviceNameContentControl.title = "Service Name";
+    // The ContentControl.tag property specifies an tag that can be used to get a reference to a content control using the ContentControlCollection.getByTag method, which you'll use in a later function.
+    serviceNameContentControl.tag = "serviceName";
+    // The ContentControl.appearance property specifies the visual look of the control. Using the value "Tags" means that the control will be wrapped in opening and closing tags, and the opening tag will have the content control's title. Other possible values are "BoundingBox" and "None".
+    serviceNameContentControl.appearance = "Tags";
+    // The ContentControl.color property specifies the color of the tags or the border of the bounding box.
+    serviceNameContentControl.color = "blue";
 
     await context.sync();
   });
