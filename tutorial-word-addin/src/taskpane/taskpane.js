@@ -20,6 +20,7 @@ Office.onReady((info) => {
     document.getElementById("insert-html").onclick = () => tryCatch(insertHTML);
     document.getElementById("insert-table").onclick = () => tryCatch(insertTable);
     document.getElementById("create-content-control").onclick = () => tryCatch(createContentControl);
+    document.getElementById("replace-content-in-control").onclick = () => tryCatch(replaceContentInControl);
 
     document.getElementById("sideload-msg").style.display = "none";
     document.getElementById("app-body").style.display = "flex";
@@ -208,6 +209,17 @@ async function createContentControl() {
     serviceNameContentControl.appearance = "Tags";
     // The ContentControl.color property specifies the color of the tags or the border of the bounding box.
     serviceNameContentControl.color = "blue";
+
+    await context.sync();
+  });
+}
+
+async function replaceContentInControl() {
+  await Word.run(async (context) => {
+    // 1. Queue commands to replace the text in the Service Name content control.
+    // The ContentControlCollection.getByTag method returns a ContentControlCollection of all content controls of the specified tag. We use getFirst to get a reference to the desired control.
+    const serviceNameContentControl = context.document.contentControls.getByTag("serviceName").getFirst();
+    serviceNameContentControl.insertText("Fabrikam Online Productivity Suite", Word.InsertLocation.replace);
 
     await context.sync();
   });
