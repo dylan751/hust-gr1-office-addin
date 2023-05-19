@@ -4,6 +4,7 @@
  */
 
 /* global document, Office, Word */
+import { base64Image } from "../../base64Image";
 
 Office.onReady((info) => {
   if (info.host === Office.HostType.Word) {
@@ -15,6 +16,7 @@ Office.onReady((info) => {
     document.getElementById("insert-text-into-range").onclick = () => tryCatch(insertTextIntoRange);
     document.getElementById("insert-text-outside-range").onclick = () => tryCatch(insertTextBeforeRange);
     document.getElementById("replace-text").onclick = () => tryCatch(replaceText);
+    document.getElementById("insert-image").onclick = () => tryCatch(insertImage);
 
     document.getElementById("sideload-msg").style.display = "none";
     document.getElementById("app-body").style.display = "flex";
@@ -127,6 +129,15 @@ async function replaceText() {
     const doc = context.document;
     const originalRange = doc.getSelection();
     originalRange.insertText("many", Word.InsertLocation.replace);
+
+    await context.sync();
+  });
+}
+
+async function insertImage() {
+  await Word.run(async (context) => {
+    // 1. Queue commands to insert an image.
+    context.document.body.insertInlinePictureFromBase64(base64Image, Word.InsertLocation.end);
 
     await context.sync();
   });
