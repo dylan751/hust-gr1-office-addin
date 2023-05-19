@@ -17,6 +17,7 @@ Office.onReady((info) => {
     document.getElementById("insert-text-outside-range").onclick = () => tryCatch(insertTextBeforeRange);
     document.getElementById("replace-text").onclick = () => tryCatch(replaceText);
     document.getElementById("insert-image").onclick = () => tryCatch(insertImage);
+    document.getElementById("insert-html").onclick = () => tryCatch(insertHTML);
 
     document.getElementById("sideload-msg").style.display = "none";
     document.getElementById("app-body").style.display = "flex";
@@ -138,6 +139,25 @@ async function insertImage() {
   await Word.run(async (context) => {
     // 1. Queue commands to insert an image.
     context.document.body.insertInlinePictureFromBase64(base64Image, Word.InsertLocation.end);
+
+    await context.sync();
+  });
+}
+
+async function insertHTML() {
+  await Word.run(async (context) => {
+    // 1. Queue commands to insert a string of HTML.
+    // Adds a blank paragraph to the end of the document
+    const blankParagraph = context.document.body.paragraphs.getLast().insertParagraph("", Word.InsertLocation.after);
+
+    // Inserts a string of HTML at the end of the paragraph;
+    // specifically two paragraphs, one formatted with the Verdana font,
+    // the other with the default styling of the Word document. (As you saw
+    // in the insertImage method earlier, the context.document.body object also has the insert* methods.)
+    blankParagraph.insertHtml(
+      '<p style="font-family: verdana;">Inserted HTML.</p><p>Another paragraph</p>',
+      Word.InsertLocation.end
+    );
 
     await context.sync();
   });
